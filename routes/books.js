@@ -2,6 +2,7 @@ const express = require("express");
 const Book = require("../models/book");
 const jsonschema = require('jsonschema');
 const bookSchema = require('./schemas/bookSchema.json');
+const updateBookSchema = require('./schemas/updateBookSchema.json');
 const { json } = require("express");
 const ExpressError = require("../expressError");
 
@@ -34,7 +35,7 @@ router.get("/:id", async function (req, res, next) {
 
 router.post("/", async function(req, res, next) {
   try {
-    const validation = validate(req.body, bookSchemaNew);
+    const validation = validate(req.body, bookSchema);
     if (!validation.valid) {
       return next({
         status: 400,
@@ -60,7 +61,7 @@ router.put("/:isbn", async function(req, res, next) {
         message: "Not allowed"
       });
     }
-    const validation = validate(req.body, bookSchemaUpdate);
+    const validation = validate(req.body, updateBookSchema);
     if (!validation.valid) {
       return next({
         status: 400,
